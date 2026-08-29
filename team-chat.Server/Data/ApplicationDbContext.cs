@@ -24,7 +24,7 @@ namespace team_chat.Server.Data
                 s.HasIndex(u=>u.Email)
                     .IsUnique();
                 s.Property(u => u.Email)
-                    .IsRequired();
+                    .IsRequired(true);
 
                 s.Property(u => u.Description)
                     .HasMaxLength(100);
@@ -38,7 +38,24 @@ namespace team_chat.Server.Data
                   .IsRequired();
 
                 s.Property(u => u.UpdatedAt)
-                    .IsRequired();
+                    .IsRequired(true);
+            });
+            #endregion
+
+            #region--Messages table
+            modelBuilder.Entity<Message>( m=>
+            {
+                m.HasIndex(m => m.UserId);
+                m.Property(m => m.UserId)
+                    .IsRequired(true);
+
+                m.Property(m => m.Content)
+                    .IsRequired(true);
+
+                m.HasOne(m => m.User)
+                    .WithMany(u => u.Messages)
+                    .HasForeignKey(m => m.UserId)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
             #endregion
 
