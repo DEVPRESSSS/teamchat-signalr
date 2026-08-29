@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="team-chat.client/team-chat.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="team-chat.Server/team-chat.Server.csproj" />
+</Solution>
