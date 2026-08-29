@@ -15,7 +15,33 @@ namespace team_chat.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            #region--ApplicationUser table
+            modelBuilder.Entity<ApplicationUser>(s =>
+            {
+                s.HasIndex(x => x.Id)
+                    .IsUnique();
+
+                s.HasIndex(u=>u.Email)
+                    .IsUnique();
+                s.Property(u => u.Email)
+                    .IsRequired();
+
+                s.Property(u => u.Description)
+                    .HasMaxLength(100);
+
+                s.Property(u => u.PasswordHash)
+                    .IsRequired()
+                    .HasMaxLength(30);
+
+                s.Property(u => u.CreatedAt)
+                  .HasDefaultValueSql("CURRENT_DATE") 
+                  .IsRequired();
+
+                s.Property(u => u.UpdatedAt)
+                    .IsRequired();
+            });
+            #endregion
+
         }
 
     }
