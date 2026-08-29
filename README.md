@@ -1,348 +1,106 @@
-\# TeamChat
+# TeamChat
 
+A real-time team chat application built with React and ASP.NET Core.
 
+TeamChat is a hands-on full-stack learning project focused on building RESTful APIs, integrating a React frontend with an ASP.NET Core backend, working with SQL Server, and implementing real-time communication using SignalR.
 
-A real-time team chat application built with \*\*React\*\* and \*\*ASP.NET Core\*\*. This project is primarily designed as a hands-on learning project for building modern full-stack applications and implementing real-time communication with SignalR.
+## Tech Stack
 
+### Frontend
 
+- React
+- JavaScript
+- Vite
+- Axios
 
-\## 🚀 Tech Stack
+### Backend
 
+- ASP.NET Core Web API
+- Entity Framework Core
+- SignalR
 
+### Database
 
-\### Frontend
+- SQL Server
 
+### Development Tools
 
+- Visual Studio
+- Visual Studio Code
+- Git
+- GitHub
+- Swagger / OpenAPI
 
-\* React
+## Project Goals
 
-\* JavaScript
+The main goal of TeamChat is to practice building a complete full-stack application while learning:
 
-\* Vite
+- RESTful API development
+- React frontend development
+- ASP.NET Core Web API
+- Entity Framework Core
+- SQL Server
+- Database migrations
+- Real-time communication with SignalR
+- Real-time notifications
+- Authentication and authorization
+- Client-server communication
+- Git and GitHub workflows
 
-\* Axios
+## Features
 
+### Current Features
 
+- [ ] Project setup
+- [ ] Basic React frontend
+- [ ] ASP.NET Core Web API
+- [ ] Database configuration
 
-\### Backend
+### Planned Features
 
+- [ ] Send messages
+- [ ] View messages
+- [ ] Store messages in SQL Server
+- [ ] Edit messages
+- [ ] Delete messages
+- [ ] Real-time messaging with SignalR
+- [ ] User authentication
+- [ ] User authorization
+- [ ] Chat rooms
+- [ ] Real-time notifications
+- [ ] Unread message counter
+- [ ] Online/offline user status
+- [ ] Message timestamps
+- [ ] Message history
+- [ ] Reconnection handling
 
-
-\* ASP.NET Core Web API
-
-\* Entity Framework Core
-
-\* SignalR
-
-
-
-\### Database
-
-
-
-\* SQL Server
-
-
-
-\## 🎯 Project Goals
-
-
-
-The goal of TeamChat is to practice building a full-stack application while learning:
-
-
-
-\* RESTful APIs
-
-\* React frontend development
-
-\* ASP.NET Core Web API
-
-\* Entity Framework Core
-
-\* SQL Server
-
-\* Real-time communication with SignalR
-
-\* Real-time notifications
-
-\* Authentication and authorization
-
-\* Git and GitHub workflow
-
-
-
-\## ✨ Planned Features
-
-
-
-\* \[ ] View messages
-
-\* \[ ] Send messages
-
-\* \[ ] Store messages in SQL Server
-
-\* \[ ] Real-time messaging with SignalR
-
-\* \[ ] User authentication
-
-\* \[ ] Chat rooms
-
-\* \[ ] Real-time notifications
-
-\* \[ ] Unread message count
-
-\* \[ ] Online/offline user status
-
-\* \[ ] Message timestamps
-
-\* \[ ] Message deletion
-
-
-
-\## 📁 Project Structure
-
-
+## Project Structure
 
 ```text
-
 team-chat/
-
 │
-
-├── team-chat.Server/
-
-│   ├── Controllers/
-
-│   ├── Hubs/
-
-│   ├── Models/
-
-│   ├── Data/
-
-│   └── Program.cs
-
-│
-
-├── team-chat.client/
-
-│   ├── src/
-
-│   ├── public/
-
-│   └── package.json
-
-│
-
 ├── .gitignore
-
-└── team-chat.slnx
-
-```
-
-
-
-\## 🔄 Application Flow
-
-
-
-The basic messaging flow will be:
-
-
-
-```text
-
-React
-
-&#x20; │
-
-&#x20; │ HTTP Request
-
-&#x20; ▼
-
-ASP.NET Core Web API
-
-&#x20; │
-
-&#x20; ▼
-
-Entity Framework Core
-
-&#x20; │
-
-&#x20; ▼
-
-SQL Server
-
-```
-
-
-
-For real-time messaging:
-
-
-
-```text
-
-User A
-
-&#x20; │
-
-&#x20; │ Send Message
-
-&#x20; ▼
-
-SignalR Hub
-
-&#x20; │
-
-&#x20; ├──────────► User B
-
-&#x20; ├──────────► User C
-
-&#x20; └──────────► User D
-
-```
-
-
-
-\## 🛠️ Getting Started
-
-
-
-\### Clone the repository
-
-
-
-```bash
-
-git clone https://github.com/YOUR\_USERNAME/team-chat.git
-
-cd team-chat
-
-```
-
-
-
-\### Run the backend
-
-
-
-```bash
-
-cd team-chat.Server
-
-dotnet restore
-
-dotnet run
-
-```
-
-
-
-\### Run the frontend
-
-
-
-Open another terminal:
-
-
-
-```bash
-
-cd team-chat.client
-
-npm install
-
-npm run dev
-
-```
-
-
-
-The React development server will provide the frontend URL in the terminal.
-
-
-
-\## 📌 Development Roadmap
-
-
-
-\### Phase 1 — Basic Chat
-
-
-
-\* Create message model
-
-\* Configure database
-
-\* Create message API
-
-\* Build React chat interface
-
-\* Connect React to ASP.NET Core
-
-
-
-\### Phase 2 — Real-Time Chat
-
-
-
-\* Create SignalR Hub
-
-\* Connect React to SignalR
-
-\* Broadcast new messages
-
-\* Handle connection and reconnection
-
-
-
-\### Phase 3 — Authentication
-
-
-
-\* User registration/login
-
-\* JWT authentication
-
-\* Protected API endpoints
-
-
-
-\### Phase 4 — Notifications
-
-
-
-\* Real-time notifications
-
-\* Unread message count
-
-\* Mark notifications as read
-
-
-
-\### Phase 5 — User Presence
-
-
-
-\* Online/offline status
-
-\* Active users
-
-\* Connection management
-
-
-
-\## 📚 Purpose
-
-
-
-TeamChat is a personal learning project focused on understanding how \*\*React, ASP.NET Core, SQL Server, and SignalR\*\* work together to build a real-time full-stack application.
-
-
-
-The project will be developed incrementally, starting with basic CRUD functionality and gradually introducing real-time communication and authentication.
-
-
-
+├── README.md
+├── team-chat.slnx
+│
+├── team-chat.Server/
+│   ├── Controllers/
+│   ├── Data/
+│   ├── Hubs/
+│   ├── Models/
+│   ├── Properties/
+│   ├── Program.cs
+│   ├── appsettings.json
+│   └── team-chat.Server.csproj
+│
+└── team-chat.client/
+    ├── public/
+    ├── src/
+    │   ├── assets/
+    │   ├── App.jsx
+    │   ├── App.css
+    │   ├── index.css
+    │   └── main.jsx
+    ├── package.json
+    ├── vite.config.js
+    └── team-chat.client.esproj
