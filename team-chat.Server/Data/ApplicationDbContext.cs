@@ -34,7 +34,7 @@ namespace team_chat.Server.Data
                     .HasMaxLength(30);
 
                 s.Property(u => u.CreatedAt)
-                  .HasDefaultValueSql("CURRENT_DATE") 
+                  .HasDefaultValueSql("GETDATE()") 
                   .IsRequired();
 
                 s.Property(u => u.UpdatedAt)
@@ -55,7 +55,7 @@ namespace team_chat.Server.Data
                 m.HasOne(m => m.User)
                     .WithMany(u => u.Messages)
                     .HasForeignKey(m => m.UserId)
-                    .OnDelete(DeleteBehavior.SetNull);
+                    .OnDelete(DeleteBehavior.Restrict);
             });
             #endregion
 
