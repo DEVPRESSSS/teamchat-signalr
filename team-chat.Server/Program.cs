@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 using team_chat.Server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,12 +18,14 @@ app.MapStaticAssets();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
+
+    app.MapGet("/", () => Results.Redirect("/scalar"));
 }
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
 app.MapFallbackToFile("/index.html");
 
 app.Run();
