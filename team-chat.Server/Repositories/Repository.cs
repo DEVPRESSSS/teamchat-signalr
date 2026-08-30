@@ -19,8 +19,7 @@ namespace team_chat.Server.Repositories
         {
           await _dbSet.AddAsync(entity);
         }
-
-        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, string? includeProperties = null, bool tracked = false)
         {
             IQueryable<T> query = _dbSet;
             if (filter != null)
@@ -36,12 +35,11 @@ namespace team_chat.Server.Repositories
                 }
             }
             return await query.ToListAsync();
-
-
         }
 
-        public async Task<T> GetAsync(Expression<Func<T, bool>>? filter,
-                string? includeProperties = null,bool tracked = false)
+        public async Task<T?> GetAsync(Expression<Func<T, bool>>? filter,
+            string? includeProperties = null,
+            bool tracked = false)
         {
             IQueryable<T> query;
 
@@ -73,9 +71,10 @@ namespace team_chat.Server.Repositories
 
         }
 
-        public void Update(T entity)
+        public async Task Save()
         {
-            _dbSet.Update(entity);
+           await _db.SaveChangesAsync();
         }
+ 
     }
 }
