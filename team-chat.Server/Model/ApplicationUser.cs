@@ -9,5 +9,8 @@
         public string? ProfilePath { get; set; }
         public DateOnly CreatedAt { get; set; }
         public DateOnly UpdatedAt { get; set; }
+
+        //Navigation property 
+        public List<Message>? Messages { get; set; }
     }
 }
