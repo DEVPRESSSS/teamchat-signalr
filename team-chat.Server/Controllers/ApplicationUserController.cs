@@ -19,9 +19,8 @@ namespace team_chat.Server.Controllers
             _userService = userService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetAllUser()
+        public async Task<ActionResult<IEnumerable<ApplicationUserDto>>> GetAllUser()
         {
-
             try
             {
                 var users = await _userService.GetAllUsersAsync();
@@ -37,18 +36,26 @@ namespace team_chat.Server.Controllers
             {
                 return BadRequest(new { error = ex.Message });
             }
-        
-      
+       
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult> GetUser(Guid id)
         {
-            return "value";
+            try
+            {
+                var user =  await _userService.GetUser(id);
+                return Ok(user);
+            }
+            catch (ExceptionHandler ex)
+            {
+                return BadRequest(new {message  = ex.Message});
+            }
+           
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateUserDto userDto)
+        public async Task<ActionResult> CreateUser([FromBody] CreateUserDto userDto)
         {
             try
             {
@@ -66,13 +73,18 @@ namespace team_chat.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto)
         {
+            try
+            {
+                await _userService.UpdateUser(id, updateUserDto);
+                return Ok(new {message = "Updated successfully!!!"});
+            }
+            catch (ExceptionHandler ex)
+            {
+                return BadRequest(new {message = ex.Message});
+            }
         }
 
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

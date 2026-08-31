@@ -13,6 +13,7 @@ public interface IRepository<T> where T : class
         bool tracked = false);
 
     Task AddAsync(T entity);
+    Task UpdateAsync(T entity);
     void Remove(T entity);
 
     Task Save();
