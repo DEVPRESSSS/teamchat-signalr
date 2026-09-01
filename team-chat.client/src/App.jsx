@@ -8,7 +8,7 @@ function App() {
             <Sidebar />
             <main className="flex-1 bg-gray-50">
                 {/* main chat panel goes here */}
-                <Messages/>
+                <Messages />
             </main>
         </div>
     );
