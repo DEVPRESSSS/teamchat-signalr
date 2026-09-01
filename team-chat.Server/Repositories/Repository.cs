@@ -75,6 +75,10 @@ namespace team_chat.Server.Repositories
         {
            await _db.SaveChangesAsync();
         }
- 
+
+        public async Task UpdateAsync(T entity)
+        {
+            _db.Update(entity);
+        }
     }
 }

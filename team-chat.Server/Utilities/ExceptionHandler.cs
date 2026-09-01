@@ -2,9 +2,11 @@
 {
     public class ExceptionHandler :Exception
     {
-        public ExceptionHandler(string message) :base(message)
+        public int StatusCode { get; }
+
+        public ExceptionHandler(int statusCode, string message) :base(message)
         {
-            
+            StatusCode = statusCode;
         }
     }
 }

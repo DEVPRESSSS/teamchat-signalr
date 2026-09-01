@@ -72,9 +72,10 @@ namespace team_chat.Server.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto)
         {
+
             try
             {
                 await _userService.UpdateUser(id, updateUserDto);
@@ -82,7 +83,10 @@ namespace team_chat.Server.Controllers
             }
             catch (ExceptionHandler ex)
             {
-                return BadRequest(new {message = ex.Message});
+                return StatusCode(ex.StatusCode, new
+                {
+                    message = ex.Message
+                });
             }
         }
 

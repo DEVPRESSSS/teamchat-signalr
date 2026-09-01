@@ -15,7 +15,10 @@ public class UserService: IUserService
     }
     public async Task<ApplicationUser> AddUser(CreateUserDto userDto)
     {
-        if (!userDto.Email.EndsWith("@gmail.com")) throw new ExceptionHandler("Invalid email format");
+        if(userDto is null)
+            throw new ExceptionHandler(400, "Invalid payload");
+
+        if (!userDto.Email.EndsWith("@gmail.com")) throw new ExceptionHandler(400,"Invalid email format");
 
         var user = new ApplicationUser
         {
@@ -27,7 +30,7 @@ public class UserService: IUserService
         };
 
         var isExist = await _userRepository.GetAsync(x=>x.Email == userDto.Email);
-        if (isExist != null) throw new ExceptionHandler("Conflict: Email already taken!!");
+        if (isExist != null) throw new ExceptionHandler(404,"Email already taken!!");
 
         await _userRepository.AddAsync(user);
         await _userRepository.Save();
@@ -47,30 +50,34 @@ public class UserService: IUserService
             CreatedAt = u.CreatedAt,
             UpdatedAt = u.UpdatedAt,
         }).ToList();
+
         return applicationUserDto;
     }
 
     public async Task<ApplicationUser> GetUser(Guid id)
     {
         var users = await _userRepository.GetAsync(x=>x.Id == id);
-        if(users is null)  throw new ExceptionHandler("Not found: User not found");
+        if(users is null)  throw new ExceptionHandler(404,"User not found");
 
         return users;
     }
 
     public async Task UpdateUser(Guid id , UpdateUserDto updateUserDto)
     {
+        if(updateUserDto is null)
+            throw new ExceptionHandler(400, "Invalid payload");
+
         var user = await _userRepository.GetAsync(x=>x.Id==id);
-        if (user is null) throw new ExceptionHandler("Not found: User not found");
+        if (user is null) throw new ExceptionHandler(404,"User not found");
 
-        var mapUser = new ApplicationUser
-        {
-            Email = updateUserDto.Email,
-            Description = updateUserDto.Description,
-            ProfilePath = updateUserDto.ProfilePath,
-        };
+        var isEmailExist = await _userRepository.GetAsync(x=>x.Email==updateUserDto.Email && x.Id !=id);
+        if (isEmailExist is not null) throw new ExceptionHandler(409,"Email already taken");
 
-        await _userRepository.UpdateAsync(mapUser);
+        user.Email = updateUserDto.Email;
+        user.Description = updateUserDto.Description;
+        user.ProfilePath = updateUserDto.ProfilePath;
+     
+        await _userRepository.UpdateAsync(user);
         await _userRepository.Save();   
     }
 }
