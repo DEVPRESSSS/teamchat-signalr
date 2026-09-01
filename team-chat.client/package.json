@@ -4,13 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "concurrently \"vite\" \"npm run css:watch\"",
+    "css:watch": "tailwindcss -i ./src/index.css -o ./src/App.css --watch",
+    "build": "vite build && tailwindcss -i ./src/index.css -o ./src/App.css --minify",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.3.3",
+    "lucide-react": "^1.38.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "tailwindcss": "^4.3.3"
@@ -20,6 +22,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.1.0",
+    "concurrently": "^10.0.5",
     "eslint": "^10.9.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.4",
