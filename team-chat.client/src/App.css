@@ -519,6 +519,12 @@
   .placeholder\:text-gray-400::placeholder {
     color: var(--color-gray-400);
   }
+  .focus-within\:border-gray-300:focus-within {
+    border-color: var(--color-gray-300);
+  }
+  .focus-within\:border-gray-600:focus-within {
+    border-color: var(--color-gray-600);
+  }
   .focus-within\:border-green-600:focus-within {
     border-color: var(--color-green-600);
   }
