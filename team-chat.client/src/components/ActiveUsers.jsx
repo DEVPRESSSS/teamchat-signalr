@@ -6,7 +6,7 @@ function ActiveUsers() {
         { id: "4", name: "Seth" },
     ];
     return (
-        <div className="grid grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-4 gap-2">
             {
                 activeUsers.map((user) => (
                     <div className="">
@@ -15,7 +15,7 @@ function ActiveUsers() {
                                 alt="User avatar"
                                 className="w-8 h-8 rounded-full object-cover" />
                         </div>
-                        <p className="text-sm text-gray-500">{user.name}</p>
+                        <h6 className="text-sm text-gray-600">{user.name}</h6>
                     </div>
                 ))
             }

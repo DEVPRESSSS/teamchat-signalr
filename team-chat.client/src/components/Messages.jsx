@@ -1,5 +1,6 @@
 import ActiveUsers from "./ActiveUsers";
 import Input from "./Input";
+import PersonalMessage from "./PersonalMessage";
 import Recents from "./Recents";
 
 function Messages() {
@@ -12,8 +13,8 @@ function Messages() {
                 <ActiveUsers />
                 <Recents/>
             </div>
-            <div className="bg-white px-4 md:py-3">
-                Personal Message
+            <div className="flex flex-col bg-white px-4 md:py-3">
+                <PersonalMessage />
             </div>
         </div>
     );
