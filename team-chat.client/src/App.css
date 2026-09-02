@@ -261,12 +261,6 @@
   .max-w-\[240px\] {
     max-width: 240px;
   }
-  .max-w-lg {
-    max-width: var(--container-lg);
-  }
-  .max-w-sm {
-    max-width: var(--container-sm);
-  }
   .min-w-0 {
     min-width: 0px;
   }
@@ -396,9 +390,6 @@
   }
   .bg-gray-100 {
     background-color: var(--color-gray-100);
-  }
-  .bg-gray-300 {
-    background-color: var(--color-gray-300);
   }
   .bg-green-600 {
     background-color: var(--color-green-600);
