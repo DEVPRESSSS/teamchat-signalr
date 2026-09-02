@@ -10,7 +10,7 @@ function SendMessageInput({ placeholder }) {
                 placeholder={placeholder}
             />
             <div className="shrink-0 text-gray-400">
-                <SendHorizontal className= "text-green-600 cursor-pointer" size={16} />
+                <SendHorizontal className= "text-green-600 cursor-pointer " size={16} />
             </div>
         </div>
     );
