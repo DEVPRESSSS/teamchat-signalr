@@ -1,12 +1,11 @@
-import { ChatThreadDemo } from "./ChatThread";
+import ChatThread from "./ChatThread";
 
-// Conversation.jsx
-function Conversation() {
-  return (
-      <div className="flex-1 overflow-y-auto bg-gray-100">
-          <ChatThreadDemo/>
-      </div>
-  );
+function Conversation({ messages }) {
+    return (
+        <div className="flex-1 overflow-y-auto bg-gray-100">
+            <ChatThread messages={messages} />
+        </div>
+    );
 }
 
 export default Conversation;

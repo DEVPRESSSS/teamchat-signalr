@@ -21,6 +21,20 @@ builder.Services.AddScoped<IUserService,UserService>();
 
 //Register SIGNALR
 builder.Services.AddSignalR();
+
+//CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactPolicy", policy =>
+    {
+       policy.WithOrigins("https://localhost:64899")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+
+    });
+
+});
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -36,6 +50,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("ReactPolicy");
 app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToFile("/index.html");

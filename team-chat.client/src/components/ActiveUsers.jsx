@@ -9,8 +9,8 @@ function ActiveUsers() {
         <div className="grid grid-cols-4 gap-2">
             {
                 activeUsers.map((user) => (
-                    <div className="">
-                        <div key={user.id }>
+                    <div key={user.id}>
+                        <div >
                             <img src="https://i.pravatar.cc/32"
                                 alt="User avatar"
                                 className="w-8 h-8 rounded-full object-cover" />
