@@ -16,26 +16,15 @@ namespace team_chat.Server.Services
         public async Task<AuthResponseDTO> LoginAsync(LoginDTO dto)
         {
             if (dto == null) throw new ExceptionHandler(400, "Invalid payload!!");
-            try
-            {
-                var user = await _userRepository.GetAsync(u=>u.Email ==  dto.Email);
-                if (user is null) throw new ExceptionHandler(401, "Invalid email or password");
 
-                var verifyPassword = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
-                if(!verifyPassword)
-                    throw new ExceptionHandler(401, "Invalid email or password");
+            var user = await _userRepository.GetAsync(u => u.Email == dto.Email);
+            if (user is null) throw new ExceptionHandler(401, "Invalid email or password");
 
-                var authResponseDto = new AuthResponseDTO
-                {
-                    Email = user.Email
-                };
-                return authResponseDto;
+            var verifyPassword = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
+            if (!verifyPassword)
+                throw new ExceptionHandler(401, "Invalid email or password");
 
-            }
-            catch (ExceptionHandler ex)
-            {
-                throw new ExceptionHandler(400, ex.Message);
-            }
+            return new AuthResponseDTO { Email = user.Email };
         }
 
         public Task LogoutAsync()

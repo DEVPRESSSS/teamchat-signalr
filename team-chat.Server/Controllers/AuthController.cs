@@ -20,7 +20,6 @@ namespace team_chat.Server.Controllers
         {
             try
             {
-                if (dto is null) return StatusCode(400, "Invalid payload");
 
                 var result = await _authService.LoginAsync(dto);
                 if (result is null)
@@ -30,7 +29,7 @@ namespace team_chat.Server.Controllers
             }
             catch (ExceptionHandler ex)
             {
-                return StatusCode(ex.StatusCode, ex.Message);
+                return Unauthorized(new { errorMessage = ex.Message });
             }
             catch (Exception ex)
             {

@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using team_chat.Server.Data;
 using team_chat.Server.Hubs;
