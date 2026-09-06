@@ -19,6 +19,7 @@ public class UserService: IUserService
             throw new ExceptionHandler(400, "Invalid payload");
 
         if (!userDto.Email.EndsWith("@gmail.com")) throw new ExceptionHandler(400,"Invalid email format");
+        if (string.IsNullOrEmpty(userDto.RawPassword)) throw new ExceptionHandler(400,"Password is required");
 
         var hashPassword = EncryptPassword.GenerateHashPassword(userDto.RawPassword);
         var user = new ApplicationUser

@@ -4,6 +4,7 @@ using team_chat.Server.Data;
 using team_chat.Server.Hubs;
 using team_chat.Server.Repositories;
 using team_chat.Server.Repositories.Interfaces;
+using team_chat.Server.Services;
 using team_chat.Server.Services.Interfaces;
 using team_chat.Server.Utilities;
 
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IAuthService,AuthService>();
 
 //Register SIGNALR
 builder.Services.AddSignalR();

@@ -505,11 +505,6 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
-  .transition-opacity {
-    transition-property: opacity;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
-    transition-duration: var(--tw-duration, var(--default-transition-duration));
-  }
   .outline-none {
     --tw-outline-style: none;
     outline-style: none;
@@ -545,9 +540,6 @@
     .hover\:text-gray-600:hover {
       color: var(--color-gray-600);
     }
-  }
-  .focus\:opacity-100:focus {
-    opacity: 100%;
   }
   @media (width >= 48rem) {
     .md\:py-3 {

@@ -31,7 +31,7 @@ namespace team_chat.Server.Data
 
                 s.Property(u => u.PasswordHash)
                     .IsRequired()
-                    .HasMaxLength(30);
+                    .HasMaxLength(100);
 
                 s.Property(u => u.CreatedAt)
                   .HasDefaultValueSql("GETDATE()") 

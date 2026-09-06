@@ -4,7 +4,7 @@
     {
         public string Email { get; set; } = null!;
         public string? Description { get; set; }
-        public string PasswordHash { get; set; } = null!;
+        public string RawPassword { get; set; } = null!;
         public string? ProfilePath { get; set; }
     }
 }

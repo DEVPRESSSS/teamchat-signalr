@@ -6,7 +6,7 @@ using team_chat.Server.Utilities;
 
 namespace team_chat.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -15,7 +15,7 @@ namespace team_chat.Server.Controllers
         {
             _authService = authService;
         }
-
+        [HttpPost]
         public async Task<ActionResult> Login(LoginDTO dto)
         {
             try
@@ -26,7 +26,7 @@ namespace team_chat.Server.Controllers
                 if (result is null)
                     return Unauthorized("Invalid email or password!!!");
 
-                return StatusCode(200, result.Email);
+                return Ok(new {message = $"User {result.Email}login successfully"});
             }
             catch (ExceptionHandler ex)
             {
