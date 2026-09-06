@@ -20,12 +20,13 @@ public class UserService: IUserService
 
         if (!userDto.Email.EndsWith("@gmail.com")) throw new ExceptionHandler(400,"Invalid email format");
 
+        var hashPassword = EncryptPassword.GenerateHashPassword(userDto.RawPassword);
         var user = new ApplicationUser
         {
             Id = Guid.NewGuid(),
             Email = userDto.Email,
             Description = userDto.Description,
-            PasswordHash = userDto.PasswordHash,
+            PasswordHash = hashPassword,
             ProfilePath = userDto.ProfilePath,
         };
 

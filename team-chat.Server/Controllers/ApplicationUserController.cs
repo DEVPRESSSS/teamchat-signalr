@@ -60,8 +60,9 @@ namespace team_chat.Server.Controllers
             try
             {
                 if (userDto == null) return BadRequest(new { message = "Invalid payload" });
-
+                
                 var user = await _userService.AddUser(userDto);
+                
                 if (user == null) return BadRequest(new { message = "Failed to create user" });
 
                 return Ok(new { message = user });
@@ -75,7 +76,6 @@ namespace team_chat.Server.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserDto updateUserDto)
         {
-
             try
             {
                 await _userService.UpdateUser(id, updateUserDto);
