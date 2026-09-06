@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { login } from "../api/authApi";
 import useForm from "./useForm";
+import toast from 'react-hot-toast';
+
 export function useLogin() {
     const [error, setError] = useState(null);
 
@@ -21,12 +23,10 @@ export function useLogin() {
 
         try {
             const response = await login(formData);
-            console.log(response.data?.message);
-
+            toast.success(response.data?.message);
         } catch (error) {
             const message = error.response?.data?.errorMessage ?? "Something went wrong. Please try again.";
             setError(message);
-            console.log(message);
         }
     };
 

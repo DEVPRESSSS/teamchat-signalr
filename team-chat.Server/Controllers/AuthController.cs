@@ -25,7 +25,7 @@ namespace team_chat.Server.Controllers
                 if (result is null)
                     return Unauthorized("Invalid email or password!!!");
 
-                return Ok(new {message = $"User {result.Email}login successfully"});
+                return Ok(new {message = $"Login successfully"});
             }
             catch (ExceptionHandler ex)
             {
