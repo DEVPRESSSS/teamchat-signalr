@@ -17,6 +17,7 @@ function Register() {
                           placeholder="Email"
                           value={formData.email}
                           onChange={handleChange}
+                          required
                       />
                       <input
                           type="password"
@@ -24,16 +25,18 @@ function Register() {
                           placeholder="Password"
                           value={formData.rawPassword || ""}
                           onChange={handleChange}
+                          required
                       />
                       <input
                           type="password"
-                          name="password"
+                          name="confirmPassword"
                           placeholder="Confirm Password"
-                          value={formData.rawPassword || ""}
+                          value={formData.confirmPassword || ""}
                           onChange={handleChange}
+                          required
                       />
                       <button type="submit" disabled={loading}>
-                          {loading ? "Logging in..." : "Submit"}
+                          {loading ? "Submitting..." : "Submit"}
                       </button>
                   </form>
               </div>

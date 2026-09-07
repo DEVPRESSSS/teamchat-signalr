@@ -22,6 +22,7 @@ function LoginPage() {
                             placeholder="Email"
                             value={formData.email}
                             onChange={handleChange}
+                            required
                         />
                         <input
                             type="password"
@@ -29,6 +30,7 @@ function LoginPage() {
                             placeholder="Password"
                             value={formData.password || ""}
                             onChange={handleChange}
+                            required
                         />
                         <button type="submit" disabled={loading}>
                             {loading ? "Logging in..." : "Login"}

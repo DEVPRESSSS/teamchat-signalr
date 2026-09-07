@@ -10,8 +10,9 @@ export function useRegister() {
     const { formData, handleChange } = useForm({
         email:"",
         rawPassword:"",
+        confirmPassword:"",
     });
-
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -22,6 +23,11 @@ export function useRegister() {
             return;
         }
 
+        if (formData.rawPassword != formData.confirmPassword) {
+            setError("Password don't match!!!");
+            return;
+        }
+       
         setLoading(true);
 
         try {
