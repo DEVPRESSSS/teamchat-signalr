@@ -15,17 +15,32 @@ namespace team_chat.Server.Controllers
         {
             _authService = authService;
         }
-        [HttpPost]
+        [HttpPost("login")]
         public async Task<ActionResult> Login(LoginDTO dto)
         {
             try
             {
 
-                var result = await _authService.LoginAsync(dto);
-                if (result is null)
-                    return Unauthorized("Invalid email or password!!!");
-
+                await _authService.LoginAsync(dto);
                 return Ok(new {message = $"Login successfully"});
+            }
+            catch (ExceptionHandler ex)
+            {
+                return Unauthorized(new { errorMessage = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPost("register")]
+        public async Task<ActionResult> Register(CreateUserDto dto)
+        {
+            try
+            {
+
+                await _authService.RegisterAsync(dto);
+                return Ok(new { message = $"Registered successfully" });
             }
             catch (ExceptionHandler ex)
             {

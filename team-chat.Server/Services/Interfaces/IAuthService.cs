@@ -5,6 +5,7 @@ namespace team_chat.Server.Services.Interfaces
     public interface IAuthService
     {
         Task<AuthResponseDTO> LoginAsync(LoginDTO dto);
+        Task RegisterAsync(CreateUserDto dto);
         Task LogoutAsync();
     }
 }

@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { login } from "../api/authApi";
 import useForm from "./useForm";
+import { register } from "../api/authApi";
 import toast from 'react-hot-toast';
 
-export function useLogin() {
+export function useRegister() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const { formData, handleChange } = useForm({
-        email: "",
-        password: ""
+        email:"",
+        rawPassword:"",
     });
 
     const handleSubmit = async (e) => {
@@ -17,22 +17,25 @@ export function useLogin() {
 
         setError(null);
 
-        if (!formData.email || !formData.password) {
+        if (!formData.email || !formData.rawPassword) {
             setError("Email and password are required!!!!");
             return;
         }
 
         setLoading(true);
+
         try {
-            const response = await login(formData);
-            toast.success(response.data?.message);
+
+            const result = await register(formData);
+            toast.success(result.data.message);
         } catch (error) {
-            const message = error.response?.data?.errorMessage ?? "Something went wrong. Please try again.";
-            setError(message);
+            const errorMessage = error.response?.data?.errorMessage;
+            setError(errorMessage);
         } finally {
             setLoading(false);
         }
-    };
 
-    return { formData, handleSubmit, handleChange, error, loading };
+
+    };
+    return { formData,error,loading, handleChange, handleSubmit };
 }

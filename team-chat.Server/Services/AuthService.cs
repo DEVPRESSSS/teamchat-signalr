@@ -1,4 +1,5 @@
 ﻿using team_chat.Server.DTO;
+using team_chat.Server.Model;
 using team_chat.Server.Repositories.Interfaces;
 using team_chat.Server.Services.Interfaces;
 using team_chat.Server.Utilities;
@@ -30,6 +31,28 @@ namespace team_chat.Server.Services
         public Task LogoutAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task RegisterAsync(CreateUserDto dto)
+        {
+            if (dto == null) throw new ExceptionHandler(400, "Invalid payload!!");
+
+            if (!dto.Email.EndsWith("@gmail.com")) throw new ExceptionHandler(400, "Invalid email format");
+            if (string.IsNullOrEmpty(dto.RawPassword)) throw new ExceptionHandler(400, "Password is required");
+
+            var isEmailExist = await _userRepository.GetAsync(x => x.Email == dto.Email);
+            if (isEmailExist is not null) throw new ExceptionHandler(409, "Email already taken");
+
+            var hashPassword = EncryptPassword.GenerateHashPassword(dto.RawPassword);
+            var newUser = new ApplicationUser
+            {
+                Id = Guid.NewGuid(),
+                Email = dto.Email,
+                PasswordHash = hashPassword,
+            };
+
+            await _userRepository.AddAsync(newUser);
+            await _userRepository.Save();
         }
     }
 }
