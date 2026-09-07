@@ -1,5 +1,10 @@
-import { Radio, User, MessageSquare, Users, ListTree, Settings, Moon } from 'lucide-react';
-
+//import { Radio, User, MessageSquare, Users, ListTree, Settings, Moon } from 'lucide-react';
+import { Radio, User, Moon } from 'lucide-react';
+import {Link } from "react-router-dom"
+const paths = [
+    { to: "/userdashboard", name: "Messages", icon: <NavIcon icon={User} /> },
+ 
+];
 function NavIcon({ icon: Icon, active = false }) {
     return (
         <button
@@ -21,11 +26,20 @@ function Sidebar() {
 
             {/* Middle nav icons */}
             <nav className="flex flex-col gap-3">
-                <NavIcon icon={User} />
-                <NavIcon icon={MessageSquare} active />
-                <NavIcon icon={Users} />
-                <NavIcon icon={ListTree} />
-                <NavIcon icon={Settings} />
+
+                {
+                    paths.map((links) => (
+                        <Link key={links.to} to={links.to}> {links.icon}</Link>
+                    ))
+                }
+                {/*     
+                     <NavIcon icon={MessageSquare} active />
+                     <NavIcon icon={Users} />
+                     <NavIcon icon={ListTree} />
+                     <NavIcon icon={Settings} />
+                 */}
+               
+             
             </nav>
 
             {/* Bottom: theme toggle + avatar */}
