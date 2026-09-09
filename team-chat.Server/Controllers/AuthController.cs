@@ -21,8 +21,8 @@ namespace team_chat.Server.Controllers
             try
             {
 
-                await _authService.LoginAsync(dto);
-                return Ok(new {message = $"Login successfully"});
+                var result = await _authService.LoginAsync(dto);
+                return Ok(new {message = $"Login successfully {result.Email}"});
             }
             catch (ExceptionHandler ex)
             {

@@ -1,4 +1,5 @@
-﻿using team_chat.Server.DTO;
+﻿using System.Security.Claims;
+using team_chat.Server.DTO;
 using team_chat.Server.Model;
 using team_chat.Server.Repositories.Interfaces;
 using team_chat.Server.Services.Interfaces;
@@ -9,9 +10,11 @@ namespace team_chat.Server.Services
     public class AuthService:IAuthService
     {
         private readonly IUserRepository _userRepository;
-        public AuthService(IUserRepository userRepository)
+        private readonly ITokenService _tokenService;
+        public AuthService(IUserRepository userRepository, ITokenService tokenService)
         {
             _userRepository = userRepository;
+            _tokenService = tokenService;
         }
 
         public async Task<AuthResponseDTO> LoginAsync(LoginDTO dto)
@@ -25,7 +28,10 @@ namespace team_chat.Server.Services
             if (!verifyPassword)
                 throw new ExceptionHandler(401, "Invalid email or password");
 
-            return new AuthResponseDTO { Email = user.Email };
+            var claims = await GetClaims(user);
+            var token = await _tokenService.GenerateAccessToken(claims);
+
+            return new AuthResponseDTO { Email = user.Email, Token = token };
         }
 
         public Task LogoutAsync()
@@ -53,6 +59,17 @@ namespace team_chat.Server.Services
 
             await _userRepository.AddAsync(newUser);
             await _userRepository.Save();
+        }
+
+        private async Task<IEnumerable<Claim>> GetClaims(ApplicationUser applicationUser)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, applicationUser.Id.ToString()),
+                new Claim(ClaimTypes.Email, applicationUser.Email.ToLowerInvariant()),
+            };
+
+            return claims;
         }
     }
 }
