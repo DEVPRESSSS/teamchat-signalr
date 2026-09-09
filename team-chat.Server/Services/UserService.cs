@@ -28,6 +28,8 @@ public class UserService: IUserService
             Email = userDto.Email,
             Description = userDto.Description,
             PasswordHash = hashPassword,
+            RoleId = userDto.RoleId,
+            Name = userDto.Name,
             ProfilePath = userDto.ProfilePath,
         };
 
@@ -78,6 +80,7 @@ public class UserService: IUserService
         user.Email = updateUserDto.Email;
         user.Description = updateUserDto.Description;
         user.ProfilePath = updateUserDto.ProfilePath;
+        user.Name = updateUserDto.Name;
      
         await _userRepository.UpdateAsync(user);
         await _userRepository.Save();   

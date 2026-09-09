@@ -12,8 +12,8 @@ using team_chat.Server.Data;
 namespace team_chat.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260830130353_AddedApplicationUserAndMessageTable")]
-    partial class AddedApplicationUserAndMessageTable
+    [Migration("20260909074309_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,15 +42,30 @@ namespace team_chat.Server.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ProfilePath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateOnly>("UpdatedAt")
                         .HasColumnType("date");
@@ -60,8 +75,9 @@ namespace team_chat.Server.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.HasIndex("Id")
-                        .IsUnique();
+                    b.HasIndex("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -89,6 +105,37 @@ namespace team_chat.Server.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("team_chat.Server.Model.Role", b =>
+                {
+                    b.Property<Guid>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateOnly>("CreatedAt")
+                        .HasColumnType("date");
+
+                    b.Property<string>("RoleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("UpdatedAt")
+                        .HasColumnType("date");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("team_chat.Server.Model.ApplicationUser", b =>
+                {
+                    b.HasOne("team_chat.Server.Model.Role", "Role")
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("team_chat.Server.Model.Message", b =>
                 {
                     b.HasOne("team_chat.Server.Model.ApplicationUser", "User")
@@ -103,6 +150,11 @@ namespace team_chat.Server.Migrations
             modelBuilder.Entity("team_chat.Server.Model.ApplicationUser", b =>
                 {
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("team_chat.Server.Model.Role", b =>
+                {
+                    b.Navigation("ApplicationUsers");
                 });
 #pragma warning restore 612, 618
         }

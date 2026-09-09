@@ -42,6 +42,9 @@ namespace team_chat.Server.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -53,6 +56,9 @@ namespace team_chat.Server.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ProfilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RoleId")
@@ -113,7 +119,7 @@ namespace team_chat.Server.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("team_chat.Server.Model.ApplicationUser", b =>
