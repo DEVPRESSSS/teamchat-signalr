@@ -18,13 +18,23 @@ namespace team_chat.Server.Data
             #region--ApplicationUser table
             modelBuilder.Entity<ApplicationUser>(s =>
             {
-                s.HasIndex(x => x.Id)
-                    .IsUnique();
+                s.HasIndex(x => x.Id);
 
                 s.HasIndex(u=>u.Email)
                     .IsUnique();
                 s.Property(u => u.Email)
+                     .HasMaxLength(50)
                     .IsRequired(true);
+
+                s.Property(u => u.Name)
+                    .IsRequired(true)
+                    .HasMaxLength(50);
+
+                s.HasOne(u => u.Role)
+                    .WithMany(x => x.ApplicationUsers)
+                    .HasForeignKey(x => x.RoleId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                    
 
                 s.Property(u => u.Description)
                     .HasMaxLength(100);

@@ -21,7 +21,7 @@ namespace team_chat.Server.Services
         {
             if (dto == null) throw new ExceptionHandler(400, "Invalid payload!!");
 
-            var user = await _userRepository.GetAsync(u => u.Email == dto.Email);
+            var user = await _userRepository.GetAsync(u => u.Email == dto.Email, includeProperties:"Role");
             if (user is null) throw new ExceptionHandler(401, "Invalid email or password");
 
             var verifyPassword = BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash);
@@ -66,10 +66,19 @@ namespace team_chat.Server.Services
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, applicationUser.Id.ToString()),
+                new Claim(ClaimTypes.GivenName, applicationUser.Name),
                 new Claim(ClaimTypes.Email, applicationUser.Email.ToLowerInvariant()),
+                new Claim(ClaimTypes.Role, applicationUser.Role.RoleName),
             };
 
             return claims;
+        }
+
+        public async Task<string> RefreshTokenAsync(string token)
+        {
+            var test = "";
+
+            return test;
         }
     }
 }

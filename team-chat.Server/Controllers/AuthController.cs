@@ -20,7 +20,6 @@ namespace team_chat.Server.Controllers
         {
             try
             {
-
                 var result = await _authService.LoginAsync(dto);
                 return Ok(new {message = $"Login successfully {result.Email}"});
             }
@@ -50,6 +49,29 @@ namespace team_chat.Server.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
+        }
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult> RefreshToken()
+        {
+            var refreshToken = Request.Cookies["JWT_REFRESH_TOKEN"];
+            if (string.IsNullOrEmpty(refreshToken))
+                return Unauthorized();
+
+            try
+            {
+                var result = await _authService.RefreshTokenAsync(refreshToken);
+
+                if (result is null)
+                    return Unauthorized("Invalid refresh token.");
+
+                return Ok();
+           
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized($"Refresh failed: {ex.Message}");
+            }
+
         }
     }
 }
