@@ -1,6 +1,7 @@
 //import { Radio, User, MessageSquare, Users, ListTree, Settings, Moon } from 'lucide-react';
 import { Radio, User, Moon } from 'lucide-react';
 import {Link } from "react-router-dom"
+import { useLogout } from '../hooks/useLogout';
 const paths = [
     { to: "/userdashboard", name: "Messages", icon: <NavIcon icon={User} /> },
  
@@ -17,6 +18,8 @@ function NavIcon({ icon: Icon, active = false }) {
 }
 
 function Sidebar() {
+    const { handleConfirmation } = useLogout();
+
     return (
         <aside className="flex flex-col items-center justify-between w-16 py-4 h-screen bg-white shadow-sm border-r border-gray-100">
             {/* Top logo */}
@@ -47,7 +50,7 @@ function Sidebar() {
                 <button className="text-gray-400 hover:text-gray-600">
                     <Moon size={18} />
                 </button>
-                <img
+                <img onClick={handleConfirmation}
                     src="https://i.pravatar.cc/32"
                     alt="User avatar"
                     className="w-8 h-8 rounded-full object-cover"

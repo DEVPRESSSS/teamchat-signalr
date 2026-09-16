@@ -8,6 +8,6 @@ namespace team_chat.Server.Services.Interfaces
         Task<AuthResponseDTO> LoginAsync(LoginDTO dto);
         Task RegisterAsync(CreateUserDto dto);
         Task<AuthResponseDTO> RefreshTokenAsync(string token);
-        Task LogoutAsync();
+        Task LogoutAsync(string refreshToken);
     }
 }

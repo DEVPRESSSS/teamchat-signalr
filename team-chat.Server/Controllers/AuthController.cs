@@ -21,7 +21,11 @@ namespace team_chat.Server.Controllers
             try
             {
                 var result = await _authService.LoginAsync(dto);
-                return Ok(new {message = $"Login successfully {result.Email}"});
+
+                Response.Cookies.Append("JWT_ACCESS_TOKEN", result.AccessToken);
+                Response.Cookies.Append("JWT_REFRESH_TOKEN", result.RefreshToken);
+
+                return Ok(new {message = $"Welcome {result.Email}"});
             }
             catch (ExceptionHandler ex)
             {
@@ -37,7 +41,6 @@ namespace team_chat.Server.Controllers
         {
             try
             {
-
                 await _authService.RegisterAsync(dto);
                 return Ok(new { message = $"Registered successfully" });
             }
@@ -72,6 +75,28 @@ namespace team_chat.Server.Controllers
                 return Unauthorized($"Refresh failed: {ex.Message}");
             }
 
+        }
+        [HttpPost("logout")]
+        public async Task<ActionResult> Logout()
+        {
+            var refreshToken = Request.Cookies["JWT_REFRESH_TOKEN"];
+
+            if (!string.IsNullOrEmpty(refreshToken))
+            {
+                await _authService.LogoutAsync(refreshToken);
+            }
+
+            var options = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            };
+
+            Response.Cookies.Delete("JWT_ACCESS_TOKEN", options);
+            Response.Cookies.Delete("JWT_REFRESH_TOKEN", options);
+
+            return Ok(new {message = "You have been logout"});
         }
     }
 }

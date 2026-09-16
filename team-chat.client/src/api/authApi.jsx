@@ -9,3 +9,8 @@ export async function register(data) {
     const response = await api.post("/auth/register", data);
     return response;
 }
+
+export async function logout() {
+    const response = await api.post("/auth/logout");
+    return response;
+}

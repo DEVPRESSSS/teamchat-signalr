@@ -39,11 +39,17 @@ namespace team_chat.Server.Services
             return await CreateTokenResponse(user, accessToken);
         }
 
-        public Task LogoutAsync()
+        #region--Logout
+        public async Task LogoutAsync(string refreshToken)
         {
-            throw new NotImplementedException();
-        }
+            var user = await _userRepository.GetAsync(x => x.RefreshToken == refreshToken);
+            if (user is null) return;
 
+            user.RefreshToken = null;
+            await _userRepository.UpdateAsync(user);
+            await _userRepository.Save();
+        }
+        #endregion
         public async Task RegisterAsync(CreateUserDto dto)
         {
             if (dto == null) throw new ExceptionHandler(400, "Invalid payload!!");
