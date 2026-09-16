@@ -1,26 +1,8 @@
 import { Info } from "lucide-react";
-import { useSignalR } from "../hooks/useSignalR";
 import SendFooter from "./SendFooter";
 import Conversation from "./Conversation";
-import { useState } from "react";
-import { useEffect } from "react";
 
 function PersonalMessage() {
-
-    const [currentUser] = useState(
-        () => sessionStorage.getItem("chatUser") || prompt("Enter your name for this session:") || "User"
-    );
-
-    useEffect(() => {
-        sessionStorage.setItem("chatUser", currentUser);
-    }, [currentUser]);
-
-
-    const {
-        messages,
-        connected,
-        sendMessage
-    } = useSignalR(currentUser);
 
     return (
         <div className="flex-1 flex flex-col">
@@ -47,12 +29,8 @@ function PersonalMessage() {
                 </button>
             </div>
 
-            <Conversation messages={messages} />
-
-            <SendFooter
-                connected={connected}
-                sendMessage={sendMessage}
-            />
+            <Conversation/>
+            <SendFooter/>
 
         </div>
     );

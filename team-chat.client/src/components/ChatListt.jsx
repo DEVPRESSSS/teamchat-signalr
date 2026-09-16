@@ -1,8 +1,6 @@
 const chatList = [
     { id: "1", sender: "BSCSJIRO", message: "Tara laro" },
-    { id: "2", sender: "BSCSPANPAN", message: "Tara laro" },
-    { id: "3", sender: "BSCSSONSON", message: "Tara laro" },
-    { id: "4", sender: "BSCSALPHAKAPARO", message: "Tara laro" },
+
 ];
 
 function ChatList() {
