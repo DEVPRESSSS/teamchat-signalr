@@ -20,6 +20,14 @@ function Register() {
                           required
                       />
                       <input
+                          name="name"
+                          type="text"
+                          placeholder="Full name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          required
+                      />
+                      <input
                           type="password"
                           name="rawPassword"
                           placeholder="Password"

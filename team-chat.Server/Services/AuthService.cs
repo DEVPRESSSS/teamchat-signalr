@@ -50,6 +50,7 @@ namespace team_chat.Server.Services
 
             if (!dto.Email.EndsWith("@gmail.com")) throw new ExceptionHandler(400, "Invalid email format");
             if (string.IsNullOrEmpty(dto.RawPassword)) throw new ExceptionHandler(400, "Password is required");
+            if (string.IsNullOrEmpty(dto.Name)) throw new ExceptionHandler(400, "Name is required");
 
             var isEmailExist = await _userRepository.GetAsync(x => x.Email == dto.Email);
             if (isEmailExist is not null) throw new ExceptionHandler(409, "Email already taken");
