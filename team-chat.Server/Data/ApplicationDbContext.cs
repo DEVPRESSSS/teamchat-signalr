@@ -57,16 +57,52 @@ namespace team_chat.Server.Data
             modelBuilder.Entity<Message>( m=>
             {
                 m.HasIndex(m => m.UserId);
-                m.Property(m => m.UserId)
-                    .IsRequired(true);
-
                 m.Property(m => m.Content)
                     .IsRequired(true);
+
+                m.Property(u => u.Status)
+                   .IsRequired(true);
 
                 m.HasOne(m => m.User)
                     .WithMany(u => u.Messages)
                     .HasForeignKey(m => m.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+            #endregion
+
+            #region--Conversation table
+            modelBuilder.Entity<Conversation>(m =>
+            {
+                m.HasIndex(m => m.ConversationId);
+                m.Property(m => m.Type)
+                    .IsRequired(true);
+
+                m.Property(u => u.CreatedAt)
+                 .HasDefaultValueSql("GETDATE()")
+                 .IsRequired();
+            });
+            #endregion
+
+            #region--Conversation participant table
+            modelBuilder.Entity<ConversationParticipant>(m =>
+            {
+                m.HasKey(p => p.Id);
+
+                m.Property(p => p.LastReadAt)
+                    .HasDefaultValueSql("GETDATE()")
+                    .IsRequired();
+
+                m.HasOne(p => p.User)
+                    .WithMany(u => u.ConversationParticipants)
+                    .HasForeignKey(p => p.UserId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                m.HasOne(p => p.Conversation)
+                    .WithMany(c => c.Participants)
+                    .HasForeignKey(p => p.ConversationId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                m.HasIndex(p => new { p.UserId, p.ConversationId }).IsUnique();
             });
             #endregion
 

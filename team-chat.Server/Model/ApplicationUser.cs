@@ -17,5 +17,7 @@
 
         //Navigation property 
         public List<Message>? Messages { get; set; }
+        public List<ConversationParticipant> ConversationParticipants { get; set; } = new();
+
     }
 }

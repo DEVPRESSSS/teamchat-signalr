@@ -27,7 +27,7 @@ namespace team_chat.Server.Services
                 issuer: Environment.GetEnvironmentVariable("JWT_ISSUER"),
                 audience: Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(15),
+                expires: DateTime.UtcNow.AddMinutes(5),
                 signingCredentials: creds
             );
 
