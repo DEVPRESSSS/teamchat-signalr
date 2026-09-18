@@ -3,16 +3,17 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { useAuth } from "../context/authContext"; 
 export function useLogout() {
     const navigate = useNavigate();
+    const { setUser } = useAuth();
     const MySwal = withReactContent(Swal)
 
-    const handleConfirmation = async () => {     
-
+    const handleConfirmation = async () => {
         const result = await MySwal.fire({
             title: "Are you sure you want to logout?",
             icon: "question",
-            position :"center",
+            position: "center",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
@@ -21,16 +22,22 @@ export function useLogout() {
             cancelButtonText: "No",
             customClass: {
                 popup: "swal-popup",
-                title:"swal-title"
+                title: "swal-title"
             }
         });
-        if (result.isConfirmed) {
-            const response = await logout();
 
-            toast.success(response.data.message);
-            navigate("/login");
+        if (result.isConfirmed) {
+            try {
+                const response = await logout();
+                toast.success(response.data?.message ?? "Logged out successfully.");
+            } catch (error) {
+                console.log("Logout request failed (likely already expired):", error);
+            } finally {
+                setUser(null);       
+                navigate("/login"); 
+            }
         }
-        
     };
-    return {handleConfirmation };
+
+    return { handleConfirmation };
 }

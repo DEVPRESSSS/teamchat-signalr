@@ -10,7 +10,17 @@ export async function register(data) {
     return response;
 }
 
+export async function me() {
+    const response = await api.get("/auth/me");
+    return response;
+}
+
 export async function logout() {
     const response = await api.post("/auth/logout");
+    return response;
+}
+
+export async function refreshtoken() {
+    const response = await api.post("/auth/refresh-token");
     return response;
 }

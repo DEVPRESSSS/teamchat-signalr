@@ -2,10 +2,13 @@ import { useState } from "react";
 import { login } from "../api/authApi";
 import useForm from "./useForm";
 import toast from 'react-hot-toast';
-import {useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from '../context/authContext'
+
 export function useLogin() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const { setUser } = useAuth(); 
 
     const { formData, handleChange } = useForm({
         email: "",
@@ -27,8 +30,9 @@ export function useLogin() {
         setLoading(true);
         try {
             const response = await login(formData);
-            toast.success(response.data?.message);
+            toast.success(`Welcome ${response.data?.message}`);
 
+            setUser(response.data?.message);
             navigate("/userdashboard");
 
         } catch (error) {

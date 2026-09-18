@@ -35,7 +35,11 @@ builder.Services.AddScoped<ITokenService,TokenService>();
 //Register SIGNALR
 builder.Services.AddSignalR();
 //Register JWT
-builder.Services.AddAuthentication()
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
     .AddJwtBearer(jwtOptions =>
     {
         jwtOptions.TokenValidationParameters = new TokenValidationParameters
@@ -53,8 +57,6 @@ builder.Services.AddAuthentication()
             if (!string.IsNullOrEmpty(accessToken))
                 context.Token = accessToken;
             return Task.CompletedTask;
-
-
         };
     });
 //CORS
@@ -86,8 +88,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors("ReactPolicy");
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToFile("/index.html");
 

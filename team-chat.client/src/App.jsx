@@ -1,19 +1,20 @@
 import './App.css';
-import { BrowserRouter, Routes, Route} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/auth/LoginPage';
-import {Toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import DefaultLayout from './layout/DefaultLayout';
 import Home from './components/Home';
 import About from './components/About';
 import Register from './pages/auth/Register';
 import UserLayout from './layout/UserLayout';
 import Messages from './components/Messages';
+import ProtectedRoute from './components/ProtectedRoute';
+
 function App() {
     return (
-        <BrowserRouter>
+        <>
             <Toaster position="top-right" reverseOrder={false} />
             <Routes>
-                {/*DefaultLayout route */ }
                 <Route element={<DefaultLayout />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<LoginPage />} />
@@ -21,13 +22,17 @@ function App() {
                     <Route path="/aboutus" element={<About />} />
                 </Route>
 
-                {/*UserLayout route */}
                 <Route element={<UserLayout />}>
-                    <Route path="/userdashboard" element={<Messages />} />            
+                    <Route path="/userdashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Messages />
+                            </ProtectedRoute>
+
+                        }/>
                 </Route>
             </Routes>
-        </BrowserRouter>
-       
+        </>
     );
 }
 

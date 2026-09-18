@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Security.Claims;
 using team_chat.Server.DTO;
 using team_chat.Server.Services.Interfaces;
 using team_chat.Server.Utilities;
@@ -21,11 +24,9 @@ namespace team_chat.Server.Controllers
             try
             {
                 var result = await _authService.LoginAsync(dto);
-
-                Response.Cookies.Append("JWT_ACCESS_TOKEN", result.AccessToken);
-                Response.Cookies.Append("JWT_REFRESH_TOKEN", result.RefreshToken);
-
-                return Ok(new {message = $"Welcome {result.Email}"});
+                RegisterTokensDuration(result);
+           
+                return Ok(new {message = result.Email});
             }
             catch (ExceptionHandler ex)
             {
@@ -67,6 +68,8 @@ namespace team_chat.Server.Controllers
                 if (result is null)
                     return Unauthorized("Invalid refresh token.");
 
+                RegisterTokensDuration(result);
+
                 return Ok();
            
             }
@@ -77,6 +80,7 @@ namespace team_chat.Server.Controllers
 
         }
         [HttpPost("logout")]
+        [Authorize]
         public async Task<ActionResult> Logout()
         {
             var refreshToken = Request.Cookies["JWT_REFRESH_TOKEN"];
@@ -97,6 +101,45 @@ namespace team_chat.Server.Controllers
             Response.Cookies.Delete("JWT_REFRESH_TOKEN", options);
 
             return Ok(new {message = "You have been logout"});
+        }
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<ActionResult> GetCurrentUser()
+        {
+            var isAuthenticated = User?.Identity?.IsAuthenticated;
+            if(isAuthenticated == true)
+            {
+                var email = User?.FindFirstValue(ClaimTypes.Email);
+                var role = User?.FindFirstValue(ClaimTypes.Role);
+
+                return Ok(new {email, role});
+            }
+
+            return Unauthorized();
+        }
+
+        private void RegisterTokensDuration(AuthResponseDTO result)
+        {
+
+            var accessCookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddMinutes(1)
+            };
+
+            var refreshCookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddMinutes(2)
+            };
+
+            Response.Cookies.Append("JWT_ACCESS_TOKEN", result.AccessToken, accessCookieOptions);
+            Response.Cookies.Append("JWT_REFRESH_TOKEN", result.RefreshToken, refreshCookieOptions);
+
         }
     }
 }
