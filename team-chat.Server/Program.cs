@@ -6,6 +6,7 @@ using Scalar.AspNetCore;
 using System.Text;
 using team_chat.Server.Data;
 using team_chat.Server.Hubs;
+using team_chat.Server.Model;
 using team_chat.Server.Repositories;
 using team_chat.Server.Repositories.Interfaces;
 using team_chat.Server.Services;
@@ -24,13 +25,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-//Services and Repository Injection
+//Repository
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IRoleRepository,RoleRepository>();
+builder.Services.AddScoped<IConversationRepository,ConversationRepository>();
+builder.Services.AddScoped<IConversationParticipantRepostitory, ConversationParticipantRepository>();
+
+//Services
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<ITokenService,TokenService>();
+builder.Services.AddScoped<IConversationService,ConversationService>();
 
 //Register SIGNALR
 builder.Services.AddSignalR();

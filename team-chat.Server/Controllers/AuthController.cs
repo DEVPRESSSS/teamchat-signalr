@@ -110,10 +110,13 @@ namespace team_chat.Server.Controllers
             if(isAuthenticated == true)
             {
                 var email = User?.FindFirstValue(ClaimTypes.Email);
-                var role = User?.FindFirstValue(ClaimTypes.Role);
+                var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+                var allClaims = User?.Claims.Select(c => new { c.Type, c.Value });
+                Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(allClaims));
 
-                return Ok(new {email, role});
+                return Ok(new {email});
             }
+            
 
             return Unauthorized();
         }
@@ -134,7 +137,7 @@ namespace team_chat.Server.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddMinutes(2)
+                Expires = DateTime.UtcNow.AddDays(7)
             };
 
             Response.Cookies.Append("JWT_ACCESS_TOKEN", result.AccessToken, accessCookieOptions);

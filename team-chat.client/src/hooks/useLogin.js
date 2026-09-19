@@ -4,11 +4,13 @@ import useForm from "./useForm";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom"
 import { useAuth } from '../context/authContext'
+import { useSignalR } from "../context/signalRContext";
 
 export function useLogin() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const { setUser } = useAuth(); 
+    const { setUser } = useAuth();
+    const { connected } = useSignalR();
 
     const { formData, handleChange } = useForm({
         email: "",
@@ -31,6 +33,8 @@ export function useLogin() {
         try {
             const response = await login(formData);
             toast.success(`Welcome ${response.data?.message}`);
+
+            console.log(`Connection status:=>${connected}`);
 
             setUser(response.data?.message);
             navigate("/userdashboard");

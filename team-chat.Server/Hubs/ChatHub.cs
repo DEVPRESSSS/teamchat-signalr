@@ -1,12 +1,24 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
+using team_chat.Server.DTO;
+using team_chat.Server.Repositories.Interfaces;
+using team_chat.Server.Utilities;
 
 namespace team_chat.Server.Hubs
 {
-    public class ChatHub:Hub
+    public class ChatHub:Hub<IChatClient>
     {
-        public async Task SendMessage(string User, string Message)
+        public ChatHub()
         {
-            await Clients.All.SendAsync("ReceiveMessage", User, Message);
+            
+        }
+        public async Task JoinConversation(Guid conversationId)
+        {
+            var userId = Context.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null) { throw new ExceptionHandler(500, "User not found!!!!"); }
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, conversationId.ToString());
+
         }
     }
 }

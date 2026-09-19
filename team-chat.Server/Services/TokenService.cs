@@ -51,7 +51,7 @@ namespace team_chat.Server.Services
             if (refreshToken is null) throw new ExceptionHandler(500,"Failed to create refresh token");
 
             user.RefreshToken = refreshToken;
-            user.Expiration = DateTime.UtcNow.AddMinutes(2);
+            user.Expiration = DateTime.UtcNow.AddDays(7);
 
             await _userRepository.UpdateAsync(user);
             await _userRepository.Save();

@@ -1,10 +1,10 @@
 import { Info } from "lucide-react";
-import SendFooter from "./SendFooter";
 import Conversation from "./Conversation";
 import { useAuth } from '../context/authContext'
-
+import SendMessageInput  from "../components/SendMessageInput"
 function PersonalMessage() {
     const { user } = useAuth();
+
     return (
         <div className="flex-1 flex flex-col">
 
@@ -17,7 +17,9 @@ function PersonalMessage() {
                     />
 
                     <h5 className="text-sm font-semibold text-gray-900 tracking-tight">
-                        {user}
+                        {
+                            user
+                        }
                     </h5>
                 </div>
 
@@ -30,8 +32,8 @@ function PersonalMessage() {
                 </button>
             </div>
 
-            <Conversation/>
-            <SendFooter/>
+            <Conversation />
+            <SendMessageInput  />
 
         </div>
     );

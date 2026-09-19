@@ -4,10 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { useAuth } from "../context/authContext"; 
+import { useSignalR } from "../context/signalRContext";
+
 export function useLogout() {
     const navigate = useNavigate();
     const { setUser } = useAuth();
     const MySwal = withReactContent(Swal)
+    const { connection,connected } = useSignalR();
 
     const handleConfirmation = async () => {
         const result = await MySwal.fire({
@@ -30,6 +33,10 @@ export function useLogout() {
             try {
                 const response = await logout();
                 toast.success(response.data?.message ?? "Logged out successfully.");
+
+                connection.stop();
+                console.log(connected);
+
             } catch (error) {
                 console.log("Logout request failed (likely already expired):", error);
             } finally {

@@ -1,5 +1,4 @@
 import axios from "axios";
-import {refreshtoken } from "../api/authApi"
 const URL = import.meta.env.VITE_API_URL;
 
 const api = axios.create({
@@ -21,7 +20,13 @@ api.interceptors.response.use(
 
             originalRequest._retry = true;
             try {
-                await refreshtoken();                 
+                await axios.post(`${URL}/auth/refresh-token`,
+                 {},
+                    {
+                        withCredentials: true
+                    }
+                );
+              
                 return api(originalRequest);
 
             } catch {
