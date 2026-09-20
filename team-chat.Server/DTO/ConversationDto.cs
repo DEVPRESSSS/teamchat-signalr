@@ -2,6 +2,6 @@
 {
     public class ConversationDto
     {
-        public Guid ReceieverId { get; set; }
+        public Guid ReceiverId { get; set; }
     }
 }

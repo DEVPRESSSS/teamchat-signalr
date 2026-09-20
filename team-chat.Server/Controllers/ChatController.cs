@@ -9,7 +9,7 @@ using team_chat.Server.Utilities;
 
 namespace team_chat.Server.Controllers
 {
-    [Route("api/conversations")]
+    [Route("api/v1/conversations")]
     [ApiController]
     public class ChatController : ControllerBase
     {
@@ -19,19 +19,21 @@ namespace team_chat.Server.Controllers
             _conversationService = conversationService;
         }
 
-        [HttpPost]
+        [HttpPost("create-convo")]
         public async Task<ActionResult> StartConversation(ConversationDto dto)
         {
             if (dto is null) return BadRequest("No receiver id found!!");
-            var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
-            
-            var conversationId = Guid.NewGuid().ToString().Substring(0,20).ToLowerInvariant();
-            if (userId == null) return BadRequest("Failed to created conversation id");
+
+            var userIdClaim = User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userIdClaim, out var userId))
+                return Unauthorized();
+
+            var conversationId = await _conversationService.GetOrCreateConversationAsync(userId, dto.ReceiverId);
 
             return Ok(conversationId);
         }
 
-        [HttpGet]
+        [HttpGet("recents")]
         public async Task<ActionResult> GetAllTheConversationsOfTheUser()
         {
             try
@@ -44,7 +46,7 @@ namespace team_chat.Server.Controllers
                 userId = Guid.Parse(userIdClaim);
 
                 var listOfContacts = await _conversationService.GetAllContacts(userId);
-                return Ok(listOfContacts);
+                return Ok(new { users = listOfContacts });
             }
             catch (ExceptionHandler ex)
             {
@@ -56,6 +58,32 @@ namespace team_chat.Server.Controllers
             }
 
             return BadRequest("No conversations list");
+        }
+        [HttpGet("active-users")]
+        public async Task<ActionResult> GetAllUsers()
+        {
+            try
+            {
+                var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (!Guid.TryParse(userIdClaim, out var userId))
+                {
+                    throw new HubException("User not authenticated.");
+                }
+                userId = Guid.Parse(userIdClaim);
+
+                var listOfActiveUsers = await _conversationService.GetAllActiveUsers();
+                return Ok(new { users = listOfActiveUsers });
+            }
+            catch (ExceptionHandler ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return BadRequest("No active users yet!!");
         }
     }
 }

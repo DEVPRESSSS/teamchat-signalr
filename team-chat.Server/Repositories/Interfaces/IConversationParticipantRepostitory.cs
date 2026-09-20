@@ -4,5 +4,6 @@ namespace team_chat.Server.Repositories.Interfaces
 {
     public interface IConversationParticipantRepostitory: IRepository<ConversationParticipant>
     {
+        Task<Guid?> FindSharedConversationIdAsync(Guid userId, Guid receiverId);
     }
 }

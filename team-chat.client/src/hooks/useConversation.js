@@ -6,14 +6,16 @@ function useConversation() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const startConversation = async () => {
+    const startConversation = async (receiverId) => {
         setLoading(true);
         setError(null);
-        try {
-            const response = await createConversation();
-            setConversationId(response.conversationId); 
 
-            return response.conversationId;
+        try {
+            const response = await createConversation({
+                receiverId: receiverId
+            });
+
+            setConversationId(response.data);
         } catch (err) {
             console.error("Failed to start conversation:", err);
             setError(err);
@@ -22,7 +24,12 @@ function useConversation() {
         }
     };
 
-    return { conversationId, startConversation, loading, error };
+    return {
+        conversationId,
+        startConversation,
+        loading,
+        error
+    };
 }
 
 export default useConversation;

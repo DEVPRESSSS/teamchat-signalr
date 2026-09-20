@@ -13,6 +13,7 @@ namespace team_chat.Server.Data
         public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<ConversationParticipant> ConversationParticipant { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
