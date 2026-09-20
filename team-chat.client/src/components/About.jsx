@@ -1,7 +1,7 @@
-function About() {
+function EmptyChat() {
   return (
-    <p>Develop by devpress_101</p>
+    <p>Oops no conversations yet!!</p>
   );
 }
 
-export default About;
+export default EmptyChat;

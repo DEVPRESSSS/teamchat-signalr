@@ -8,5 +8,6 @@ namespace team_chat.Server.Services.Interfaces
         Task<List<ContactsDto>> GetAllContacts(Guid userId);
         Task<List<ContactsDto>> GetAllActiveUsers();
         Task<Guid> GetOrCreateConversationAsync(Guid receiverId, Guid conversationId);
+        Task<ContactsDto> GetUser(Guid userId);
     }
 }

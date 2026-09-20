@@ -5,3 +5,8 @@ export async function fetchActiveUsers() {
     return response;
 }
 
+export async function fetchSelectedUser(userId) {
+    const response = await api.get(`/conversations/user/${userId}`);
+    return response;
+}
+

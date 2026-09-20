@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchActiveUsers } from "../api/usersApi"
 function useUsers() {
     const [activeUsers, setActiveUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -15,8 +16,12 @@ function useUsers() {
         }
         fetchUsers();
 
-    },[])
+    }, [])
+
+    const selectUser = (user) => {
+        setSelectedUser(user);
+    };
     
-    return {activeUsers}
+    return { activeUsers, selectedUser, selectUser }
 }
 export default useUsers;

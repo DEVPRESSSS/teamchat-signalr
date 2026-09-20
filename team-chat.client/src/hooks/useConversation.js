@@ -12,10 +12,12 @@ function useConversation() {
 
         try {
             const response = await createConversation({
-                receiverId: receiverId
+                receiverId
             });
 
             setConversationId(response.data);
+
+
         } catch (err) {
             console.error("Failed to start conversation:", err);
             setError(err);

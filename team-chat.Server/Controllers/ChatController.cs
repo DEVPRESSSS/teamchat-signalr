@@ -85,5 +85,25 @@ namespace team_chat.Server.Controllers
 
             return BadRequest("No active users yet!!");
         }
+
+        [HttpGet("user/{userId:guid}")]
+        public async Task<ActionResult> GetUser(Guid userId)
+        {
+            try
+            {
+                var selectedUser = await _conversationService.GetUser(userId);
+                return Ok(new { user = selectedUser });
+            }
+            catch (ExceptionHandler ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return BadRequest("No active users yet!!");
+        }
     }
 }

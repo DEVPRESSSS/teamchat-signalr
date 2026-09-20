@@ -57,7 +57,16 @@ namespace team_chat.Server.Services
              return listOfConversations;
          
         }
+        public async Task<ContactsDto> GetUser(Guid userId)
+        {
+            var user = await _userRepository.GetAsync(x => x.Id == userId);
+            if (user == null) throw new ExceptionHandler(400, "User not found!!");
 
+            var userInfo = new ContactsDto{ UserId = user.Id, FullName = user.Name, ProfilePath = user.ProfilePath };
+
+            return userInfo;
+
+        }
         public async Task<Guid> GetOrCreateConversationAsync(Guid userId, Guid receiverId)
         {
 
