@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { createConversation } from "../api/conversationApi";
-
+import { useConversationContext } from "../context/conversationContext";
+import { connection } from "../api/SignalRClient";
 function useConversation() {
-    const [conversationId, setConversationId] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { conversationId, setConversationId } = useConversationContext();
 
     const startConversation = async (receiverId) => {
         setLoading(true);
@@ -15,8 +16,14 @@ function useConversation() {
                 receiverId
             });
 
-            setConversationId(response.data);
+            const newConversationId = response.data;
 
+            setConversationId(newConversationId);
+
+            await connection.invoke(
+                "JoinConversation",
+                newConversationId
+            );
 
         } catch (err) {
             console.error("Failed to start conversation:", err);

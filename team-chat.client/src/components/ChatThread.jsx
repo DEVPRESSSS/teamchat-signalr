@@ -2,17 +2,21 @@ import { useMessages } from "../hooks/useMessages";
 
 export default function ChatThread() {
     const { messages } = useMessages();
+    console.log(messages);
     return (
+   
+            <div className="mx-auto p-6 bg-white">
+                    {
 
-        <div className="mx-auto p-6 bg-white">
-            {
-                messages.map((message) => (
+                        messages.map((message) => (
 
-                    <div key={message.id}>
-                        {message.text}
-                    </div>
-                ))
-            }
-        </div>
+                            <div key={message.text } >
+                                {message.text}
+                            </div>
+                        ))
+                    }
+              
+             </div>
+
     );
 }

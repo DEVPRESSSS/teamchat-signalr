@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { AuthProvider } from './context/AuthProvider'; 
 import { SignalRProvider } from './context/SignalRProvider'; 
+import { ConversationProvider } from './context/ConversationProvider'; 
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(
@@ -10,9 +11,10 @@ createRoot(document.getElementById('root')).render(
         <BrowserRouter>
             <AuthProvider>
                 <SignalRProvider>
-                    <App />
-                </SignalRProvider>
-              
+                    <ConversationProvider>
+                        <App />
+                    </ConversationProvider>
+                </SignalRProvider>   
             </AuthProvider>
         </BrowserRouter>
     </StrictMode>,

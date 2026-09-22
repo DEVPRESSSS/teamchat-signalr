@@ -2,12 +2,14 @@ import { SendHorizontal } from 'lucide-react';
 import { useSignalR } from '../context/signalRContext';
 import { useState } from 'react';
 import { useMessages } from '../hooks/useMessages';
+import { useConversationContext } from '../context/conversationContext';
 
 function SendMessageInput({ placeholder }) {
 
     const { connected } = useSignalR();
     const { sendMessage } = useMessages();
     const [message, setMessage] = useState('');
+    const { conversationId } = useConversationContext();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,7 +18,7 @@ function SendMessageInput({ placeholder }) {
             return;
         }
 
-        await sendMessage(message);
+        await sendMessage(conversationId, message);
 
         setMessage('');
     };

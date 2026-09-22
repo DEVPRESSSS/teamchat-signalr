@@ -4,28 +4,33 @@ import { connection } from "../api/SignalRClient";
 export function useMessages() {
     const [messages, setMessages] = useState([]);
 
-    useEffect(() => {   
-        const receiveMessage = (message) => {
-
+    useEffect(() => {
+        const receiveMessage = (
+            conversationId,
+            senderId,
+            message
+        ) => {
             setMessages((prev) => [
                 ...prev,
                 {
-                    avatar: `https://i.pravatar.cc/32`,
-                    text: message         
+                    avatar: "https://i.pravatar.cc/32",
+                    text: message,
+                    conversationId,
+                    senderId
                 }
             ]);
         };
 
         connection.on("ReceiveMessage", receiveMessage);
+
         return () => {
             connection.off("ReceiveMessage", receiveMessage);
         };
     }, []);
 
-    const sendMessage = async (message) => {
+    const sendMessage = async (conversationId, message) => {
         try {
-            const user = "test";
-            await connection.invoke("SendMessage", user, message);
+            await connection.invoke("SendMessage", conversationId, message);
         } catch (error) {
             console.error("Send Message Error:", error);
         }

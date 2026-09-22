@@ -67,26 +67,46 @@ namespace team_chat.Server.Services
             return userInfo;
 
         }
-        public async Task<Guid> GetOrCreateConversationAsync(Guid userId, Guid receiverId)
+        public async Task<Guid> GetOrCreateConversationAsync(
+            Guid userId,
+            Guid receiverId)
         {
+            var existingConversationId =
+                await _converstaionParticipantRepository
+                    .FindSharedConversationIdAsync(userId, receiverId);
+
+            if (existingConversationId is not null)
+            {
+                return existingConversationId.Value;
+            }
 
             var conversationId = Guid.NewGuid();
 
-            var existingConversationId = await _converstaionParticipantRepository.FindSharedConversationIdAsync(userId, receiverId);
-
-            if (existingConversationId is null)
+            var conversationObj = new Conversation
             {
-                var conversationObj = new Conversation
-                {
-                    ConversationId = conversationId,
-                    Type = ConversationTypeEnum.Direct,
-                };
-                await _conversationRepository.AddAsync(conversationObj);
-                await _converstaionParticipantRepository.AddAsync(new ConversationParticipant { Id = Guid.NewGuid(), ConversationId = conversationId, UserId = userId });
-                await _converstaionParticipantRepository.AddAsync(new ConversationParticipant { Id = Guid.NewGuid(), ConversationId = conversationId, UserId = receiverId });
+                ConversationId = conversationId,
+                Type = ConversationTypeEnum.Direct,
+            };
 
-                await _userRepository.Save();
-            }
+            await _conversationRepository.AddAsync(conversationObj);
+
+            await _converstaionParticipantRepository.AddAsync(
+                new ConversationParticipant
+                {
+                    Id = Guid.NewGuid(),
+                    ConversationId = conversationId,
+                    UserId = userId
+                });
+
+            await _converstaionParticipantRepository.AddAsync(
+                new ConversationParticipant
+                {
+                    Id = Guid.NewGuid(),
+                    ConversationId = conversationId,
+                    UserId = receiverId
+                });
+
+            await _userRepository.Save();
 
             return conversationId;
         }
