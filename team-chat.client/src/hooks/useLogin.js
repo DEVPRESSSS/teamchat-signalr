@@ -11,13 +11,13 @@ export function useLogin() {
     const [loading, setLoading] = useState(false);
     const { setUser } = useAuth();
     const { connected } = useSignalR();
+    const navigate = useNavigate();
 
     const { formData, handleChange } = useForm({
         email: "",
         password: ""
     });
 
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,7 +34,7 @@ export function useLogin() {
             const response = await login(formData);
             toast.success(`Welcome ${response.data?.message}`);
 
-            console.log(`Connection status:=>${connected}`);
+            console.log(`Connection status:${connected}`);
 
             setUser(response.data?.message);
             navigate("/userdashboard");

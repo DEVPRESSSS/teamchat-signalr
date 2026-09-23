@@ -68,6 +68,15 @@ namespace team_chat.Server.Data
                     .WithMany(u => u.Messages)
                     .HasForeignKey(m => m.UserId)
                     .OnDelete(DeleteBehavior.Restrict);
+
+                m.HasOne(msg => msg.Conversation)
+                     .WithMany(conv => conv.Messages)
+                     .HasForeignKey(msg => msg.ConversationId)
+                     .OnDelete(DeleteBehavior.Restrict);
+
+                m.Property(u => u.CreatedAt)
+                   .HasDefaultValueSql("GETDATE()")
+                   .IsRequired();
             });
             #endregion
 

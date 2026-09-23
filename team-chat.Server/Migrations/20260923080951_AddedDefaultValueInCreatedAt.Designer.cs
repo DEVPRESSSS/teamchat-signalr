@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using team_chat.Server.Data;
 
@@ -11,9 +12,11 @@ using team_chat.Server.Data;
 namespace team_chat.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260923080951_AddedDefaultValueInCreatedAt")]
+    partial class AddedDefaultValueInCreatedAt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,9 +140,6 @@ namespace team_chat.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ConversationId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -152,8 +152,6 @@ namespace team_chat.Server.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("MessageId");
-
-                    b.HasIndex("ConversationId");
 
                     b.HasIndex("UserId");
 
@@ -212,19 +210,11 @@ namespace team_chat.Server.Migrations
 
             modelBuilder.Entity("team_chat.Server.Model.Message", b =>
                 {
-                    b.HasOne("team_chat.Server.Model.Conversation", "Conversation")
-                        .WithMany("Messages")
-                        .HasForeignKey("ConversationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("team_chat.Server.Model.ApplicationUser", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Conversation");
 
                     b.Navigation("User");
                 });
@@ -238,8 +228,6 @@ namespace team_chat.Server.Migrations
 
             modelBuilder.Entity("team_chat.Server.Model.Conversation", b =>
                 {
-                    b.Navigation("Messages");
-
                     b.Navigation("Participants");
                 });
 

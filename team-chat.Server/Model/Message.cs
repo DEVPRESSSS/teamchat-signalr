@@ -8,6 +8,9 @@ namespace team_chat.Server.Model
         public Guid MessageId { get; set; }
         public Guid UserId { get; set; }
         public ApplicationUser? User { get; set; }
+
+        public Guid ConversationId { get; set; }
+        public Conversation? Conversation { get; set; }
         public string Content { get; set; } = null!;
         public MessageStatusEnum Status{ get; set; }
         public DateTime? CreatedAt { get; set; }

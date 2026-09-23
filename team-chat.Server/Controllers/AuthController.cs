@@ -112,7 +112,6 @@ namespace team_chat.Server.Controllers
                 var email = User?.FindFirstValue(ClaimTypes.Email);
                 var userId = User?.FindFirstValue(ClaimTypes.NameIdentifier);
                 var allClaims = User?.Claims.Select(c => new { c.Type, c.Value });
-                Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(allClaims));
 
                 return Ok(new {email});
             }

@@ -8,6 +8,7 @@ namespace team_chat.Server.Model
         public ConversationTypeEnum Type { get; set; }
         public DateTime CreatedAt { get; set; }
         public List<ConversationParticipant> Participants { get; set; } = new();
+        public List<Message> Messages { get; set; } = new();
 
     }
 }

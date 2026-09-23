@@ -41,7 +41,7 @@ namespace team_chat.Server.Controllers
                 var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (!Guid.TryParse(userIdClaim, out var userId))
                 {
-                    throw new HubException("User not authenticated."); 
+                    throw new ExceptionHandler(401, "User not authenticated.");
                 }
                 userId = Guid.Parse(userIdClaim);
 
@@ -67,11 +67,11 @@ namespace team_chat.Server.Controllers
                 var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (!Guid.TryParse(userIdClaim, out var userId))
                 {
-                    throw new HubException("User not authenticated.");
+                    throw new ExceptionHandler(401,"User not authenticated.");
                 }
                 userId = Guid.Parse(userIdClaim);
 
-                var listOfActiveUsers = await _conversationService.GetAllActiveUsers();
+                var listOfActiveUsers = await _conversationService.GetAllActiveUsers(userId);
                 return Ok(new { users = listOfActiveUsers });
             }
             catch (ExceptionHandler ex)

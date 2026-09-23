@@ -34,7 +34,7 @@ export function useLogout() {
                 const response = await logout();
                 toast.success(response.data?.message ?? "Logged out successfully.");
 
-                connection.stop();
+                await connection.stop();
                 console.log(connected);
 
             } catch (error) {

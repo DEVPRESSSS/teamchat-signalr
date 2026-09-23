@@ -1,6 +1,7 @@
 import { connection } from "../api/SignalRClient";
 import { useEffect, useState } from "react";
 import SignalRContext from "./signalRContext";
+
 export function SignalRProvider({ children }) {
 
     const [connected, setConnected] = useState(false);
@@ -10,9 +11,12 @@ export function SignalRProvider({ children }) {
         const startConnection = async () => {
 
             try {
+                if (connection.state !== "Disconnected") {
+                    return;
+                }
                 await connection.start();
-                console.log("SignalR connected!");
                 setConnected(true);
+
             } catch(error) {
                 console.log(error);
             }

@@ -23,9 +23,9 @@ namespace team_chat.Server.Services
             _conversationRepository = conversationRepository;
         }
 
-        public async Task<List<ContactsDto>> GetAllActiveUsers()
+        public async Task<List<ContactsDto>> GetAllActiveUsers(Guid userId)
         {
-            var user = await _userRepository.GetAllAsync();
+            var user = await _userRepository.GetAllAsync(x=>x.Id != userId);
             if (user == null) throw new ExceptionHandler(500, "Failed to find conversations!!!");
 
             var listOfActiveUsers = user.Select(s => new ContactsDto
