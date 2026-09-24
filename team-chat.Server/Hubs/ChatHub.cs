@@ -52,6 +52,7 @@ namespace team_chat.Server.Hubs
                     userIdClaim,
                     message
                 );
+            //Save the message
             await _messageService.SaveMessage(userId, conversationId, message);
         }
     }

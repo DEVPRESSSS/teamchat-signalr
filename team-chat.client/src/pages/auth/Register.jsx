@@ -15,7 +15,7 @@ function Register() {
             footer={
                 <>
                     Already have an account?{" "}
-                    <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+                    <Link to="/login" className="font-medium text-black hover:text-indigo-500">
                         Log in
                     </Link>
                 </>
@@ -39,7 +39,6 @@ function Register() {
                     type="email"
                     autoComplete="email"
                     placeholder="you@gmail.com"
-                    hint="Use a @gmail.com address."
                     maxLength={50}
                     value={formData.email}
                     onChange={handleChange}
@@ -69,7 +68,7 @@ function Register() {
                     type="submit"
                     disabled={loading}
                     aria-busy={loading}
-                    className="mt-2 h-10 w-full rounded-lg bg-zinc-900 text-sm font-medium text-white transition-colors
+                    className="mt-2 h-10 w-full cursor-pointer rounded-lg bg-zinc-900 text-sm font-medium text-white transition-colors
                              hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                     {loading ? "Submitting..." : "Create account"}

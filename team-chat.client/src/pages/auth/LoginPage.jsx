@@ -20,7 +20,7 @@ function LoginPage() {
             footer={
                 <>
                     New to TeamChat?{" "}
-                    <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+                    <Link to="/register" className="font-medium text-black hover:text-indigo-500">
                         Create an account
                     </Link>
                 </>
@@ -51,7 +51,7 @@ function LoginPage() {
                     type="submit"
                     disabled={loading}
                     aria-busy={loading}
-                    className="mt-2 h-10 w-full rounded-lg bg-zinc-900 text-sm font-medium text-white transition-colors
+                    className="mt-2 h-10 w-full rounded-lg cursor-pointer bg-zinc-900 text-sm font-medium text-white transition-colors
                                hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                     {loading ? "Logging in..." : "Login"}
