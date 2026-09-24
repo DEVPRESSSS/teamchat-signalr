@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { fetchActiveUsers } from "../api/usersApi"
+import { fetchActiveUsers, getRecentContacts } from "../api/usersApi"
 function useUsers() {
     const [activeUsers, setActiveUsers] = useState([]);
+    const [recentChats, setRecentChats] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
 
     useEffect(() => {
@@ -21,7 +22,21 @@ function useUsers() {
     const selectUser = (user) => {
         setSelectedUser(user);
     };
+
+    useEffect(() => {
+        const getRecentContactsList = async () => {
+            try {
+                const response = await getRecentContacts();
+                setRecentChats(response.data.listOfContacts);
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getRecentContactsList();
+
+    }, [])
     
-    return { activeUsers, selectedUser, selectUser }
+    return { activeUsers, selectedUser, selectUser, recentChats }
 }
 export default useUsers;

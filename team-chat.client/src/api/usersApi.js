@@ -10,3 +10,7 @@ export async function fetchSelectedUser(userId) {
     return response;
 }
 
+export async function getRecentContacts() {
+    const response = await api.get('conversations/recents');
+    return response;
+}
