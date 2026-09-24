@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useMessages } from '../hooks/useMessages';
 import { useConversationContext } from '../context/conversationContext';
 
-function SendMessageInput({ placeholder }) {
+function SendMessageInput({ placeholder = "Write a message" }) {
 
     const { connected } = useSignalR();
     const { sendMessage } = useMessages();
@@ -23,30 +23,33 @@ function SendMessageInput({ placeholder }) {
         setMessage('');
     };
     return (
-        <div
-            className="flex items-center gap-2 border border-gray-300 px-3 mb-2 py-2 rounded-md w-full
-                       focus-within:border-gray-600 focus-within:ring-2 focus-within:ring-indigo-100
-                       transition-colors"
-        >
-            <form onSubmit={handleSubmit} className="flex items-center w-full">
+        <form onSubmit={handleSubmit} className="shrink-0 border-t border-zinc-200 bg-white p-3 sm:px-4">
+            <div
+                className="flex items-center gap-2 rounded-lg border border-zinc-200 bg-white py-2 pl-3 pr-2
+                           transition-colors focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-100"
+            >
                 <input
-                    className="flex-1 bg-transparent border-none outline-none text-sm placeholder:text-gray-400"
-                    placeholder={placeholder}
+                    value={message}
+                    aria-label="Message"
+                    autoComplete="off"
+                    className="min-w-0 flex-1 bg-transparent text-sm text-zinc-900 outline-none placeholder:text-zinc-400 disabled:cursor-not-allowed"
+                    placeholder={connected ? placeholder : "Connecting…"}
                     onChange={(e) => setMessage(e.target.value)}
                     disabled={!connected}
                 />
 
                 <button
-                    disabled={!connected}
-                    className="shrink-0 text-gray-400"
+                    type="submit"
+                    aria-label="Send message"
+                    disabled={!connected || !message.trim()}
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-600 text-white
+                               transition-colors hover:bg-indigo-700
+                               disabled:cursor-not-allowed disabled:bg-zinc-100 disabled:text-zinc-400"
                 >
-                    <SendHorizontal
-                        className="text-green-600 cursor-pointer"
-                        size={16}
-                    />
+                    <SendHorizontal size={16} />
                 </button>
-            </form>
-        </div>
+            </div>
+        </form>
     );
 }
 

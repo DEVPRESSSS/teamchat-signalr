@@ -33,14 +33,13 @@ export function useLogout() {
             try {
                 const response = await logout();
                 toast.success(response.data?.message ?? "Logged out successfully.");
-
+                setUser(null);  
                 await connection.stop();
                 console.log(connected);
 
             } catch (error) {
                 console.log("Logout request failed (likely already expired):", error);
             } finally {
-                setUser(null);       
                 navigate("/login"); 
             }
         }

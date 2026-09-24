@@ -1,8 +1,9 @@
 import useConversation from "../hooks/useConversation";
 import useUsers from "../hooks/useUsers";
+import Avatar from "./Avatar";
 
-function ActiveUsers({ setSelectedUser }) {
-    const { activeUsers } = useUsers();
+function ActiveUsers({ selectedUser, setSelectedUser }) {
+    const { activeUsers, loading, error } = useUsers();
     const { startConversation } = useConversation();
 
     const handleUserClick = async (user) => {
@@ -12,25 +13,47 @@ function ActiveUsers({ setSelectedUser }) {
     };
 
     return (
-        <div className="grid grid-cols-4 gap-2">
-            {activeUsers.map((user) => (
-                <div
-                    key={user.userId}
-                    onClick={() => handleUserClick(user)}
-                    className="min-w-0 cursor-pointer"
-                >
-                    <img
-                        src="https://i.pravatar.cc/32"
-                        alt="User avatar"
-                        className="w-8 h-8 rounded-full object-cover"
-                    />
+        <section aria-labelledby="people-heading">
+            <h2 id="people-heading" className="px-2 pb-1 text-xs font-semibold text-zinc-500">
+                People
+            </h2>
 
-                    <h6 className="text-sm text-gray-600 truncate">
-                        {user.fullName}
-                    </h6>
-                </div>
-            ))}
-        </div>
+            {loading && (
+                <p role="status" className="px-2 py-2 text-sm text-zinc-500">Loading people…</p>
+            )}
+            {!loading && error && (
+                <p role="alert" className="px-2 py-2 text-sm text-red-600">
+                    Unable to load people. Refresh the page to try again.
+                </p>
+            )}
+            {!loading && !error && activeUsers.length === 0 && (
+                <p className="px-2 py-2 text-sm text-zinc-500">
+                    No one else has joined yet. Invite a teammate to register.
+                </p>
+            )}
+
+            <ul>
+                {activeUsers.map((user) => {
+                    const isSelected = selectedUser?.userId === user.userId;
+                    return (
+                        <li key={user.userId}>
+                            <button
+                                type="button"
+                                onClick={() => handleUserClick(user)}
+                                aria-current={isSelected ? "true" : undefined}
+                                className={`flex w-full items-center gap-3 rounded-lg px-2 py-2 text-left transition-colors ${isSelected ? "bg-indigo-50" : "hover:bg-zinc-100"
+                                    }`}
+                            >
+                                <Avatar src={user.profilePath} name={user.fullName} />
+                                <span className="min-w-0 flex-1 truncate text-sm font-medium text-zinc-900">
+                                    {user.fullName}
+                                </span>
+                            </button>
+                        </li>
+                    );
+                })}
+            </ul>
+        </section>
     );
 }
 

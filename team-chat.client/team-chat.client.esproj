@@ -11,4 +11,7 @@
   <ItemGroup>
     <Folder Include="src\services\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".claude\skills\frontend-design\SKILL.md" />
+  </ItemGroup>
 </Project>

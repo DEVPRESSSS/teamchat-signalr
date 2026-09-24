@@ -1,38 +1,46 @@
-import { Info } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Conversation from "./Conversation";
-import SendMessageInput  from "../components/SendMessageInput"
-function PersonalMessage({ selectedUser }) {
+import SendMessageInput from "../components/SendMessageInput"
+import Avatar from "./Avatar";
+import { useSignalR } from "../context/signalRContext";
+
+function PersonalMessage({ selectedUser, onBack }) {
+    const { connected } = useSignalR();
+
     return (
-        <div className="flex-1 flex flex-col">
+        <div className="flex min-h-0 flex-1 flex-col">
 
-            <div className="flex items-center justify-between h-14 px-4 border-b border-gray-200 bg-white shrink-0">
+            <div className="flex h-16 shrink-0 items-center justify-between gap-3 border-b border-zinc-200 bg-white px-4">
 
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 items-center gap-3">
+                    <button
+                        type="button"
+                        onClick={onBack}
+                        aria-label="Back to chats"
+                        className="-ml-1 rounded-lg p-1.5 text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-900 md:hidden"
+                    >
+                        <ArrowLeft size={18} />
+                    </button>
 
-                    <img
-                        src={selectedUser?.profilePath || "https://i.pravatar.cc/32"}
-                        alt="User avatar"
-                        className="w-9 h-9 rounded-full object-cover ring-1 ring-gray-200 shrink-0"
-                    />
+                    <Avatar src={selectedUser?.profilePath} name={selectedUser?.fullName} size="lg" />
 
-                    <h5 className="text-sm font-semibold text-gray-900 tracking-tight">
+                    <h2 className="truncate text-sm font-semibold text-zinc-900">
                         {selectedUser?.fullName}
-                    </h5>
-
+                    </h2>
                 </div>
 
-                <button
-                    type="button"
-                    aria-label="View info"
-                    className="text-gray-600 hover:text-gray-600 transition-colors p-1.5 cursor-pointer rounded-full hover:bg-gray-100"
-                >
-                    <Info size={18} />
-                </button>
+                <p role="status" className="flex shrink-0 items-center gap-1.5 text-xs text-zinc-500">
+                    <span
+                        aria-hidden="true"
+                        className={`h-1.5 w-1.5 rounded-full ${connected ? "bg-emerald-500" : "bg-zinc-300"}`}
+                    />
+                    {connected ? "Connected" : "Connecting…"}
+                </p>
 
             </div>
 
-            <Conversation />
-            <SendMessageInput />
+            <Conversation selectedUser={selectedUser} />
+            <SendMessageInput placeholder={`Message ${selectedUser?.fullName ?? ""}`.trim()} />
 
         </div>
     );
