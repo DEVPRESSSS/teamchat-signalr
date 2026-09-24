@@ -114,7 +114,7 @@ namespace team_chat.Server.Services
             {
                 AccessToken = accessToken,
                 RefreshToken = await _tokenService.SaveRefreshTokenToDb(user),
-                Expiration = DateTime.UtcNow.AddMinutes(1),
+                Expiration = DateTime.UtcNow.AddMinutes(15),
                 RoleName = user.Role.RoleName,
                 Email = user.Email,
             };
