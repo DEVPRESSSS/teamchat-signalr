@@ -1,4 +1,4 @@
-import Avatar from "./Avatar";
+import Avatar from "../components/Avatar";
 
 const developer = "devpress_101";
 

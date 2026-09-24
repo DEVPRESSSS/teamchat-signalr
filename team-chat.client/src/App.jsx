@@ -3,12 +3,12 @@ import { Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/auth/LoginPage';
 import { Toaster } from 'react-hot-toast'
 import DefaultLayout from './layout/DefaultLayout';
-import Home from './components/Home';
-import About from './components/About';
 import Register from './pages/auth/Register';
 import UserLayout from './layout/UserLayout';
 import Messages from './components/Messages';
 import ProtectedRoute from './components/ProtectedRoute';
+import Home from './pages/Home';
+import About from './pages/About';
 
 function App() {
     return (
@@ -19,7 +19,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/aboutus" element={<About />} />
+                    <Route path="/aboutus" element={<About/>} />
                 </Route>
 
                 <Route element={<UserLayout />}>

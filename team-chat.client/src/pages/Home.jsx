@@ -1,5 +1,5 @@
 import { Monitor, Server, Database, Wrench } from "lucide-react";
-import Badge from "./Badge";
+import Badge from "../components/Badge";
 
 const heroStack = ["React", "ASP.NET Core", "SignalR", "SQL Server"];
 
