@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createConversation } from "../api/conversationApi";
 import { useConversationContext } from "../context/conversationContext";
 import { connection } from "../api/SignalRClient";
@@ -8,6 +8,20 @@ function useConversation() {
     const [error, setError] = useState(null);
     const { conversationId, setConversationId } = useConversationContext();
     const { connected } = useSignalR();
+
+    const conversationIdRef = useRef(conversationId);
+    useEffect(() => {
+        conversationIdRef.current = conversationId;
+    }, [conversationId]);
+
+    useEffect(() => {
+        if (!connected || !conversationIdRef.current) return;
+
+        connection
+            .invoke("JoinConversation", conversationIdRef.current)
+            .catch((err) => console.error("Failed to rejoin conversation:", err));
+    }, [connected]);
+
     const startConversation = async (receiverId) => {
         setLoading(true);
         setError(null);
