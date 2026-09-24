@@ -46,7 +46,7 @@ namespace team_chat.Server.Controllers
                 userId = Guid.Parse(userIdClaim);
 
                 var listOfContacts = await _conversationService.GetAllContacts(userId);
-                return Ok(new { users = listOfContacts });
+                return Ok(new { listOfContacts });
             }
             catch (ExceptionHandler ex)
             {

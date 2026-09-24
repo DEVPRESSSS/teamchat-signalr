@@ -22,7 +22,7 @@ namespace team_chat.Server.Services
             _userRepository = userRepository;
             _conversationRepository = conversationRepository;
         }
-
+        #region--Should be move in Userservice
         public async Task<List<ContactsDto>> GetAllActiveUsers(Guid userId)
         {
             var user = await _userRepository.GetAllAsync(x=>x.Id != userId);
@@ -40,23 +40,22 @@ namespace team_chat.Server.Services
             return listOfActiveUsers;
         }
 
-        public async Task<List<ContactsDto>> GetAllContacts(Guid userId)
+        #endregion
+
+
+        #region--Get all the contacts of the user
+        public async Task<List<RecentsDto>> GetAllContacts(Guid userId)
         {
            
-            var user = await _converstaionParticipantRepository.GetAllAsync(x => x.UserId == userId, includeProperties: "User,Conversation");
-            if (user == null) throw new ExceptionHandler(500, "Failed to find conversations!!!");
+            var listOfConversations = await _converstaionParticipantRepository.GetAllRecentConversation(userId);
+            if (listOfConversations == null) throw new ExceptionHandler(500, "Failed to find conversations!!!");
 
-            var listOfConversations = user.Select(s => new ContactsDto
-            {
-                    UserId = s.UserId,
-                    FullName = s.User.Name,
-                    ProfilePath = s.User.ProfilePath,
-                  
-             }).ToList();
-
-             return listOfConversations;
+            return listOfConversations;
          
         }
+        #endregion
+
+        #region--Get specific user
         public async Task<ContactsDto> GetUser(Guid userId)
         {
             var user = await _userRepository.GetAsync(x => x.Id == userId);
@@ -67,6 +66,9 @@ namespace team_chat.Server.Services
             return userInfo;
 
         }
+        #endregion
+
+        #region --CreateConversation
         public async Task<Guid> GetOrCreateConversationAsync(
             Guid userId,
             Guid receiverId)
@@ -110,5 +112,6 @@ namespace team_chat.Server.Services
 
             return conversationId;
         }
+        #endregion
     }
 }
